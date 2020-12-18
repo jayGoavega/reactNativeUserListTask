@@ -1,5 +1,5 @@
 export interface gitUserType{
-    login:string;
+    login:boolean;
     id:number;
     node_id?:string;
     avatar_url:string;

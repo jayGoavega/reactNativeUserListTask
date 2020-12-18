@@ -1,21 +1,17 @@
 import {gitUserType} from './utils';
 
-interface arrayType {
-  userDetails: gitUserType[];
-}
-
 // Getting data from github user api
-export const gitUserApiCall = async () => {
+export const gitUserApiCall = async ():Promise<gitUserType[]> => {
   let url = await fetch('https://api.github.com/users?since=135');
   let res = await url.json();
-  return res;
+  return res as gitUserType[];
 };
 
-export const wrapPromise = (promise: Promise<any>) => {
+export const wrapPromise = (promise: Promise<gitUserType[]>) => {
   let status: string = 'pending';
-  let result:arrayType;
-  let suspender = promise.then(
-    (r:arrayType):void => {
+  let result:gitUserType[];
+  let suspender:Promise<void> = promise.then(
+    (r:gitUserType[]):void => {
       status = 'success';
       result = r;
     },
