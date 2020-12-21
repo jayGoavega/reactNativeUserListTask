@@ -3,8 +3,8 @@ import {View, Text, ScrollView, ActivityIndicator} from 'react-native';
 import Card from '../commonComponents/userCard';
 import {Style} from '../styles';
 import {createResource} from '../githubApi';
-
-const gitUserData = createResource();
+import {gitUserType} from '../utils';
+const resource: {api: {read(): gitUserType[]}} = createResource();
 
 const userListPage: FC = (): JSX.Element => {
   return (
@@ -15,7 +15,7 @@ const userListPage: FC = (): JSX.Element => {
       <ScrollView>
         <View>
           <Suspense fallback={<ActivityIndicator size="large" color="gray" />}>
-            <Card userDetails={gitUserData} />
+            <Card gitUserData={resource} />
           </Suspense>
         </View>
       </ScrollView>

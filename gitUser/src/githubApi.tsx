@@ -1,23 +1,25 @@
 import {gitUserType} from './utils';
-
+import axios from 'axios';
 // Getting data from github user api
-export const gitUserApiCall = async ():Promise<gitUserType[]> => {
-  let url = await fetch('https://api.github.com/users?since=135');
-  let res = await url.json();
-  return res as gitUserType[];
+export const gitUserApiCall = async () => {
+  const res = await axios.get<gitUserType[]>(
+    'https://api.github.com/users?since=135',
+  );
+  const result = res.data;
+  return result;
 };
 
-export const wrapPromise = (promise: Promise<gitUserType[]>) => {
+const wrapPromise = (promise: Promise<gitUserType[]>) => {
   let status: string = 'pending';
-  let result:gitUserType[];
-  let suspender:Promise<void> = promise.then(
-    (r:gitUserType[]):void => {
+  let result: gitUserType[];
+  let suspender: Promise<void> = promise.then(
+    (r: gitUserType[]): void => {
       status = 'success';
       result = r;
     },
-    (e):void => {
+    (err): void => {
       status = 'error';
-      result = e;
+      result = err;
     },
   );
 
@@ -33,9 +35,8 @@ export const wrapPromise = (promise: Promise<gitUserType[]>) => {
   };
 };
 
-export const createResource = ():any => {
-  let gitUserPromise = gitUserApiCall();
+export const createResource = () => {
   return {
-    user: wrapPromise(gitUserPromise),
+    api: wrapPromise(gitUserApiCall()),
   };
 };

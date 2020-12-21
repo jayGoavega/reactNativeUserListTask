@@ -6,18 +6,18 @@ import {
   UserUrl,
   Thumbnail,
 } from '../styledComponents/styledComponents';
-import {gitUserType} from '../utils'
+import {gitUserType} from '../utils';
 
-interface Props{
-  userDetails:gitUserType[]
+interface Props {
+  gitUserData: {api: {read(): gitUserType[]}};
 }
 
-const userCard: FC<Props> = ({userDetails}) => {
-  let user = userDetails.user.read();
+const userCard: FC<Props> = ({gitUserData}) => {
+  let user: gitUserType[] = gitUserData.api.read();
   return (
     <View>
       {user &&
-        user.slice(0, 10).map((item:gitUserType, index: number) => {
+        user.slice(0, 10).map((item: gitUserType, index: number) => {
           return (
             <View key={index}>
               <Card>
